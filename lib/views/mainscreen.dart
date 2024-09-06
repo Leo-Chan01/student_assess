@@ -45,7 +45,7 @@ class Mainscreen extends StatelessWidget {
   }
 
   List<Widget> _buildScreens() {
-    return [StudentAssessPage(), const StudentProfilePage()];
+    return [const StudentAssessPage(), const StudentProfilePage()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -60,7 +60,7 @@ class Mainscreen extends StatelessWidget {
           initialRoute: AppRoutes.homeRoute,
           routes: {
             AppRoutes.studentAssessRoute: (final context) =>
-                StudentAssessPage(),
+                const StudentAssessPage(),
             AppRoutes.studentProfileRoute: (final context) =>
                 const StudentProfilePage(),
           },
@@ -76,7 +76,7 @@ class Mainscreen extends StatelessWidget {
           initialRoute: AppRoutes.homeRoute,
           routes: {
             AppRoutes.studentAssessRoute: (final context) =>
-                StudentAssessPage(),
+                const StudentAssessPage(),
             AppRoutes.studentProfileRoute: (final context) =>
                 const StudentProfilePage(),
           },
