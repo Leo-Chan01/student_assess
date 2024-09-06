@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -53,6 +54,7 @@ class FilePickerProvider extends ChangeNotifier {
     if (result != null) {
       PlatformFile file = result.files.first;
       _fileName = file.name;
+      _selectedAsset = file;
       notifyListeners();
 
       File pdfFile = File(result.files.single.path!);
@@ -62,6 +64,7 @@ class FilePickerProvider extends ChangeNotifier {
       PDFDoc pdfDoc = await PDFDoc.fromFile(pdfFile);
       String text = await pdfDoc.text;
       _pdfText = text;
+      log("Text for this file is $_pdfText");
       _isLoading = false;
       _feedbackText = "Submit Summary";
       notifyListeners();
@@ -73,15 +76,19 @@ class FilePickerProvider extends ChangeNotifier {
 
   Future<void> updateUserInput(String userInput) async {
     _userInput = userInput;
+    log("User input is $userInput");
     notifyListeners();
   }
 
   void calculateSimilarity() {
+    log("Calculalting in here");
     _isLoading = true;
-    _feedbackText = "...Extracting Text";
+    _feedbackText = "...Analyzing";
     notifyListeners();
+    Future.delayed(const Duration(seconds: 2), () {});
     final similarity = osaStringSimilarity(_pdfText, _userInput);
     final accuracy = similarity * 100;
+    log("Similarity is $similarity and accuracy is ${accuracy.roundToDouble()}");
 
     _similarityScore = accuracy;
     _isLoading = false;

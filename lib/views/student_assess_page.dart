@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -70,8 +72,7 @@ class StudentAssessPage extends StatelessWidget {
                                 SizedBox(width: 50.w),
                                 MaterialButton(
                                   onPressed: () async {
-                                    await fileProvider
-                                        .pickImageFile(context);
+                                    await fileProvider.pickImageFile(context);
                                   },
                                   elevation: 0,
                                   shape: RoundedRectangleBorder(
@@ -104,8 +105,7 @@ class StudentAssessPage extends StatelessWidget {
                         style: 14.w600,
                       ),
                       const Spacer(),
-                      Icon(CupertinoIcons.cloud_upload,
-                          color: AppColor.grey)
+                      Icon(CupertinoIcons.cloud_upload, color: AppColor.grey)
                     ],
                   ),
                 ),
@@ -123,7 +123,7 @@ class StudentAssessPage extends StatelessWidget {
               keyboardType: TextInputType.multiline,
               minLines: 1,
               controller: inputcontroller,
-              // maxLines: null,
+              maxLines: null,
               expands: false,
             ),
             SizedBox(height: 32.h),
@@ -135,6 +135,7 @@ class StudentAssessPage extends StatelessWidget {
                   if (fileProvider.selectedAsset == null) {
                   } else {
                     if (inputcontroller.text.trim().toString().isNotEmpty) {
+                      log("In here");
                       await fileProvider
                           .updateUserInput(
                               inputcontroller.text.trim().toString())
@@ -156,8 +157,7 @@ class StudentAssessPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 64.h),
-            Text("Assessment Score",
-                textAlign: TextAlign.left, style: 30.w600),
+            Text("Assessment Score", textAlign: TextAlign.left, style: 30.w600),
             SizedBox(height: 24.h),
             Container(
               height: 150.h,
@@ -165,7 +165,9 @@ class StudentAssessPage extends StatelessWidget {
               decoration: BoxDecoration(
                   color: AppColor.grey.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12.sp)),
-              child: const Center(child: Text("__")),
+              child: Center(
+                  child:
+                      Text("${fileProvider.similarityScore.roundToDouble()}%")),
             )
           ],
         ),
