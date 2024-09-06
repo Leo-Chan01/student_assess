@@ -22,7 +22,7 @@ class AppRoutes {
       ),
       GoRoute(
         path: AppRoutes.studentAssessRoute,
-        builder: (context, state) => const StudentAssessPage(),
+        builder: (context, state) => StudentAssessPage(),
       ),
       GoRoute(
         path: AppRoutes.studentProfileRoute,
