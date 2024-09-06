@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
+import 'package:student_assess/view_model/utils/config/theme.dart';
 import 'package:student_assess/views/student_assess_page.dart';
 import 'package:student_assess/views/student_profile_page.dart';
 
@@ -21,18 +22,16 @@ class Mainscreen extends StatelessWidget {
       handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset: true, stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      // popBehaviorOnSelectedNavBarItemPress: PopActionScreensType.all,
+      popBehaviorOnSelectedNavBarItemPress: PopBehavior.all,
       padding: const EdgeInsets.only(top: 8),
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: AppTheme.instance.lightTheme.scaffoldBackgroundColor,
       isVisible: true,
       animationSettings: const NavBarAnimationSettings(
         navBarItemAnimation: ItemAnimationSettings(
-          // Navigation Bar's items animation properties.
           duration: Duration(milliseconds: 400),
           curve: Curves.ease,
         ),
         screenTransitionAnimation: ScreenTransitionAnimationSettings(
-          // Screen transition animation on change of selected tab.
           animateTabTransition: true,
           duration: Duration(milliseconds: 200),
           screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
