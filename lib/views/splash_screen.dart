@@ -49,7 +49,8 @@ class _SplashScreenState extends State<SplashScreen>
                 child: child,
               );
             },
-            child: const FlutterLogo()),
+            
+            child: Image.asset("assets/images/icons8-assessment-48.png")),
       ),
     );
   }
