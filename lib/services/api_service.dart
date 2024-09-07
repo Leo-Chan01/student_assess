@@ -35,7 +35,7 @@ class ApiService {
       return null;
     } else {
       log("Comparison successful");
-      return jsonDecode(response.data);
+      return response.data as Map<String, dynamic>;
     }
   }
 }

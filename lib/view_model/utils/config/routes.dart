@@ -1,4 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:student_assess/views/cgpa_calculate_screen.dart';
+import 'package:student_assess/views/cgpa_mainscreen.dart';
+import 'package:student_assess/views/cgpa_register_screen.dart';
 import 'package:student_assess/views/mainscreen.dart';
 import 'package:student_assess/views/splash_screen.dart';
 import 'package:student_assess/views/student_assess_page.dart';
@@ -9,6 +12,9 @@ class AppRoutes {
   static String homeRoute = '/home';
   static String studentAssessRoute = '/student-assess';
   static String studentProfileRoute = '/student-profile';
+  static String cgpaMainRoute = '/cgpa-main';
+  static String cgpaRegisterCoursesRoute = '/cgpa-register-course';
+  static String cgpaCalculateCgpaRoute = '/cgpa-calculate';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -28,6 +34,15 @@ class AppRoutes {
         path: AppRoutes.studentProfileRoute,
         builder: (context, state) => const StudentProfilePage(),
       ),
+      GoRoute(
+          path: AppRoutes.cgpaMainRoute,
+          builder: (context, state) => const CgpaMainscreen()),
+      GoRoute(
+          path: AppRoutes.cgpaRegisterCoursesRoute,
+          builder: (context, state) => const CgpaRegisterScreen()),
+      GoRoute(
+          path: AppRoutes.cgpaCalculateCgpaRoute,
+          builder: (context, state) => const CgpaCalculateScreen()),
     ],
   );
 }

@@ -100,21 +100,28 @@ class FilePickerProvider extends ChangeNotifier {
   void calculateSimilarityFromAPI() async {
     ApiService apiService = ApiService();
     _isLoading = true;
-
+    _feedbackText = "Calculating similarity";
     notifyListeners();
     try {
       log("Trying request");
       Map<String, dynamic>? responsedata = await apiService
           .postData('compare', {"pdfText": _pdfText, "userInput": _userInput});
-
+      log("Request result is $responsedata");
+      notifyListeners();
       if (responsedata != null) {
         _isLoading = false;
+        _feedbackText = "Submit Summary";
         _similarityScore = responsedata["similarityScore"];
+        notifyListeners();
       } else {
         _isLoading = false;
+        _feedbackText = "Submit Summary";
         _similarityScore = 0.00;
+        notifyListeners();
       }
     } catch (e) {
+      _feedbackText = "Submit Summary";
+      notifyListeners();
       log("Error occured => $e");
     }
   }
