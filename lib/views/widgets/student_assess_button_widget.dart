@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
 
+// ignore: must_be_immutable
 class StudentAssessButton extends StatelessWidget {
   StudentAssessButton({
     super.key,
@@ -11,7 +12,7 @@ class StudentAssessButton extends StatelessWidget {
     required this.buttonTextColor,
   });
 
-  void Function() pressedAction;
+  void Function()? pressedAction;
   String buttonText;
   Color buttonColor;
   Color buttonTextColor;

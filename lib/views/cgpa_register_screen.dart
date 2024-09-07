@@ -1,14 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:student_assess/view_model/providers/cgpa_calculator_provider.dart';
+import 'package:student_assess/view_model/utils/config/color.dart';
+import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
+import 'package:student_assess/views/widgets/student_assess_button_widget.dart';
 import 'package:student_assess/views/widgets/student_assess_textfield_widget.dart';
 
 class CgpaRegisterScreen extends StatelessWidget {
   CgpaRegisterScreen({super.key});
 
-  final _courseController = TextEditingController();
+  static final _courseController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +25,18 @@ class CgpaRegisterScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Course Registration",
-                style: 36.w700,
+              Row(
+                children: [
+                  BackButton(
+                    onPressed: () {
+                      context.go(AppRoutes.homeRoute);
+                    },
+                  ),
+                  Text(
+                    "Course Registration",
+                    style: 36.w700,
+                  ),
+                ],
               ),
               SizedBox(height: 48.h),
               StudentAssessTextField(
@@ -49,18 +63,42 @@ class CgpaRegisterScreen extends StatelessWidget {
                 underline: const SizedBox.shrink(),
               ),
               SizedBox(height: 18.h),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Register Course'),
-              ),
+              StudentAssessButton(
+                  pressedAction: () {
+                    String courseCode =
+                        _courseController.text.trim().toString();
+                    if (courseCode.isEmpty) {
+                    } else {
+                      cgpaProvider.registerCourse(
+                          courseCode: _courseController.text.trim().toString());
+                    }
+                  },
+                  buttonText: "Register Course",
+                  buttonColor: AppColor.black,
+                  buttonTextColor: AppColor.white),
               Expanded(
                 child: ListView.builder(
                   itemCount: cgpaProvider.courses.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(cgpaProvider.courses[index].courseCode),
+                      title: Text(
+                        cgpaProvider.courses[index].courseCode,
+                        style: 18.w600,
+                      ),
                       subtitle: Text(
-                          'Credit Unit: ${cgpaProvider.courses[index].creditUnit}'),
+                        'Credit Unit: ${cgpaProvider.courses[index].creditUnit}',
+                        style: 14.w400,
+                      ),
+                      trailing: InkWell(
+                        onTap: () {
+                          cgpaProvider.removeCourse(
+                              cgpaProvider.courses[index].courseCode);
+                        },
+                        child: const Icon(
+                          CupertinoIcons.minus,
+                          color: Colors.red,
+                        ),
+                      ),
                     );
                   },
                 ),
