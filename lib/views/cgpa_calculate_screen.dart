@@ -37,21 +37,42 @@ class CgpaCalculateScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final course = cgpaProvider.courses[index];
                           return ListTile(
-                            title: Text(course.courseCode),
-                            subtitle: DropdownButton<String>(
-                              value: cgpaProvider.selectedGrades[course],
-                              items: cgpaProvider.grades.keys.map((grade) {
-                                return DropdownMenuItem(
-                                  value: grade,
-                                  child: Text(
-                                    grade,
-                                    style: 28.w400,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                cgpaProvider.updateSelectedGrade(course, value);
-                              },
+                            contentPadding:
+                                EdgeInsetsDirectional.symmetric(vertical: 8.sp),
+                            title: Text(
+                              course.courseCode,
+                              style: 18.w600,
+                            ),
+                            subtitle: Container(
+                              decoration: BoxDecoration(
+                                  color: AppColor.grey.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12.r)),
+                              child: DropdownButton<String>(
+                                value: cgpaProvider.selectedGrades[course],
+                                isExpanded: true,
+                                underline: const SizedBox.shrink(),
+                                borderRadius: BorderRadius.circular(12.r),
+                                alignment: Alignment.bottomCenter,
+                                elevation: 0,
+                                menuWidth: 100.w,
+                                items: cgpaProvider.grades.keys.map((grade) {
+                                  return DropdownMenuItem(
+                                    value: grade,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.sp),
+                                      child: Text(
+                                        grade,
+                                        style: 28.w400,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  cgpaProvider.updateSelectedGrade(
+                                      course, value);
+                                },
+                              ),
                             ),
                           );
                         },
@@ -70,34 +91,14 @@ class CgpaCalculateScreen extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
-                          content:
-                              Text('Your CGPA is ${cgpaProvider.cgpa.toStringAsFixed(2)}'),
+                          elevation: 0,
+                          content: Text(
+                            'Your CGPA is ${cgpaProvider.cgpa.toStringAsFixed(2)}',
+                            style: 20.w400,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      
                     } else {}
                   },
                   buttonText: "Calculate CGPA",
