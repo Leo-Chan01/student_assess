@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:student_assess/view_model/providers/file_picker_provider.dart';
 import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
+import 'package:student_assess/views/widgets/student_assess_button_widget.dart';
 import 'package:student_assess/views/widgets/student_assess_textfield_widget.dart';
 
 class StudentAssessPage extends StatelessWidget {
@@ -127,35 +128,25 @@ class StudentAssessPage extends StatelessWidget {
                   inputcontroller: inputcontroller,
                   hintText: "Write your summary here"),
               SizedBox(height: 32.h),
-              SizedBox(
-                width: double.infinity,
-                height: 66.h,
-                child: MaterialButton(
-                  onPressed: () async {
-                    if (fileProvider.selectedAsset == null) {
-                    } else {
-                      if (inputcontroller.text.trim().toString().isNotEmpty) {
-                        log("In here");
-                        await fileProvider
-                            .updateUserInput(
-                                inputcontroller.text.trim().toString())
-                            .then((value) {
-                          // fileProvider.calculateSimilarity();
-                          fileProvider.calculateSimilarityFromAPI();
-                        });
-                      } else {}
-                    }
-                  },
-                  color: AppColor.black,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.sp)),
-                  textColor: AppColor.white,
-                  child: Text(
-                    fileProvider.feedbackText,
-                    style: 16.w700,
-                  ),
-                ),
+              StudentAssessButton(
+                pressedAction: () async {
+                  if (fileProvider.selectedAsset == null) {
+                  } else {
+                    if (inputcontroller.text.trim().toString().isNotEmpty) {
+                      log("In here");
+                      await fileProvider
+                          .updateUserInput(
+                              inputcontroller.text.trim().toString())
+                          .then((value) {
+                        // fileProvider.calculateSimilarity();
+                        fileProvider.calculateSimilarityFromAPI();
+                      });
+                    } else {}
+                  }
+                },
+                buttonText: fileProvider.feedbackText,
+                buttonColor: AppColor.black,
+                buttonTextColor: AppColor.white,
               ),
               SizedBox(height: 64.h),
               Text("Assessment Score",
