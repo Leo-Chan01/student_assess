@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:student_assess/view_model/providers/file_picker_provider.dart';
 import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
+import 'package:student_assess/views/widgets/student_assess_textfield_widget.dart';
 
 class StudentAssessPage extends StatelessWidget {
   const StudentAssessPage({super.key});
@@ -122,20 +123,9 @@ class StudentAssessPage extends StatelessWidget {
                 )),
               ),
               SizedBox(height: 32.h),
-              TextFormField(
-                decoration: InputDecoration(
-                    hintText: "Write your summary here",
-                    fillColor: AppColor.grey.withOpacity(0.1),
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12.r))),
-                keyboardType: TextInputType.multiline,
-                minLines: 1,
-                controller: inputcontroller,
-                maxLines: null,
-                expands: false,
-              ),
+              StudentAssessTextField(
+                  inputcontroller: inputcontroller,
+                  hintText: "Write your summary here"),
               SizedBox(height: 32.h),
               SizedBox(
                 width: double.infinity,

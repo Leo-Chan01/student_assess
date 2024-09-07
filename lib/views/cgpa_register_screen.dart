@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_assess/view_model/providers/cgpa_calculator_provider.dart';
+import 'package:student_assess/views/widgets/student_assess_textfield_widget.dart';
 
 class CgpaRegisterScreen extends StatelessWidget {
   CgpaRegisterScreen({super.key});
@@ -14,9 +15,12 @@ class CgpaRegisterScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            TextField(
-              controller: _courseController,
-              decoration: const InputDecoration(labelText: 'Course Code'),
+            const Text("Course Registration"),
+            StudentAssessTextField(
+              inputcontroller: _courseController,
+              hintText: "Course Code",
+              maxLinesNeeded: 1,
+              inputType: TextInputType.name,
             ),
             DropdownButton<int>(
               value: cgpaProvider.selectedCreditUnit,
