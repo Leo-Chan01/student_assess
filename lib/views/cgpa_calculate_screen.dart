@@ -67,6 +67,37 @@ class CgpaCalculateScreen extends StatelessWidget {
                   pressedAction: () {
                     if (cgpaProvider.courses.isNotEmpty) {
                       cgpaProvider.calculateCGPA();
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          content:
+                              Text('Your CGPA is ${cgpaProvider.cgpa.toStringAsFixed(2)}'),
+                        ),
+                      );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      
                     } else {}
                   },
                   buttonText: "Calculate CGPA",

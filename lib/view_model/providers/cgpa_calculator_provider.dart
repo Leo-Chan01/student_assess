@@ -11,6 +11,9 @@ class CgpaCalculatorProvider extends ChangeNotifier {
   List<Course> _courses = [];
   List<Course> get courses => _courses;
 
+  double _cgpa = 0;
+  double get cgpa => _cgpa;
+
   final Map<String, int> _grades = {
     'A': 5,
     'B': 4,
@@ -35,9 +38,9 @@ class CgpaCalculatorProvider extends ChangeNotifier {
       totalCreditUnits += course.creditUnit;
     }
 
-    double cgpa = totalGP / totalCreditUnits;
-
-    // return cgpa;
+    _cgpa = totalGP / totalCreditUnits;
+    notifyListeners();
+    log("CGPA is $_cgpa");
   }
 
   updateSelectedCreditUnit(int value) {
