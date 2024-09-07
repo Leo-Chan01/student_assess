@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdf_text/flutter_pdf_text.dart';
 import 'package:similarity/similarity.dart';
+import 'package:student_assess/services/api_service.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class FilePickerProvider extends ChangeNotifier {
@@ -94,5 +95,27 @@ class FilePickerProvider extends ChangeNotifier {
     _isLoading = false;
     _feedbackText = "Submit Summary";
     notifyListeners();
+  }
+
+  void calculateSimilarityFromAPI() async {
+    ApiService apiService = ApiService();
+    _isLoading = true;
+
+    notifyListeners();
+    try {
+      log("Trying request");
+      Map<String, dynamic>? responsedata = await apiService
+          .postData('compare', {"pdfText": _pdfText, "userInput": _userInput});
+
+      if (responsedata != null) {
+        _isLoading = false;
+        _similarityScore = responsedata["similarityScore"];
+      } else {
+        _isLoading = false;
+        _similarityScore = 0.00;
+      }
+    } catch (e) {
+      log("Error occured => $e");
+    }
   }
 }

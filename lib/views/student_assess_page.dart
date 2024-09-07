@@ -140,7 +140,8 @@ class StudentAssessPage extends StatelessWidget {
                           .updateUserInput(
                               inputcontroller.text.trim().toString())
                           .then((value) {
-                        fileProvider.calculateSimilarity();
+                        // fileProvider.calculateSimilarity();
+                        fileProvider.calculateSimilarityFromAPI();
                       });
                     } else {}
                   }
