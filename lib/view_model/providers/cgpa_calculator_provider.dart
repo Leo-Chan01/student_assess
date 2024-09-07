@@ -15,6 +15,12 @@ class CgpaCalculatorProvider extends ChangeNotifier {
   double _cgpa = 0;
   double get cgpa => _cgpa;
 
+  bool _isFetching = false;
+  bool get isFetching => _isFetching;
+
+  bool _isRegisteringCourse = false;
+  bool get isRegisteringCourse => _isRegisteringCourse;
+
   final Map<String, int> _grades = {
     'A': 5,
     'B': 4,
@@ -26,6 +32,7 @@ class CgpaCalculatorProvider extends ChangeNotifier {
 
   Map<String, int> get grades => _grades;
 
+  // ignore: prefer_final_fields
   Map<Course, String> _selectedGrades = {};
   Map<Course, String> get selectedGrades => _selectedGrades;
 
@@ -69,9 +76,15 @@ class CgpaCalculatorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //HIVE ADDITION
+
   Future<void> addCourse(Course course) async {
+    _isRegisteringCourse = true;
+    notifyListeners();
     var box = await Hive.openBox<Course>('coursesBox');
     await box.add(course);
+    _isRegisteringCourse = false;
+    notifyListeners();
   }
 
   Future<List<Course>> getCourses() async {
@@ -90,7 +103,11 @@ class CgpaCalculatorProvider extends ChangeNotifier {
   }
 
   void loadCourses() async {
+    _isFetching = true;
+    notifyListeners();
     List<Course> courses = await getCourses();
     log('Courses: $courses');
+    _isFetching = false;
+    notifyListeners();
   }
 }

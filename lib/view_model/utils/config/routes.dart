@@ -39,7 +39,7 @@ class AppRoutes {
           builder: (context, state) => const CgpaMainscreen()),
       GoRoute(
           path: AppRoutes.cgpaRegisterCoursesRoute,
-          builder: (context, state) => CgpaRegisterScreen()),
+          builder: (context, state) => const CgpaRegisterScreen()),
       GoRoute(
           path: AppRoutes.cgpaCalculateCgpaRoute,
           builder: (context, state) => const CgpaCalculateScreen()),

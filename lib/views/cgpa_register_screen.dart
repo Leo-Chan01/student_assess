@@ -11,7 +11,7 @@ import 'package:student_assess/views/widgets/student_assess_button_widget.dart';
 import 'package:student_assess/views/widgets/student_assess_textfield_widget.dart';
 
 class CgpaRegisterScreen extends StatelessWidget {
-  CgpaRegisterScreen({super.key});
+  const CgpaRegisterScreen({super.key});
 
   static final _courseController = TextEditingController();
 
