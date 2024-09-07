@@ -19,9 +19,8 @@ class StudentAssessPage extends StatelessWidget {
     var fileProvider = context.watch<FilePickerProvider>();
     return Scaffold(
         body: SafeArea(
-      child: Center(
-          child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.sp, horizontal: 28.sp),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 32.sp, horizontal: 28.sp),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -193,7 +192,7 @@ class StudentAssessPage extends StatelessWidget {
             ],
           ),
         ),
-      )),
+      ),
     ));
   }
 }
