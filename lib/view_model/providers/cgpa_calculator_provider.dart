@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:student_assess/models/course_model.dart';
 
 class CgpaCalculatorProvider extends ChangeNotifier {
@@ -66,5 +67,30 @@ class CgpaCalculatorProvider extends ChangeNotifier {
   void updateSelectedGrade(Course course, String? value) {
     _selectedGrades[course] = value!;
     notifyListeners();
+  }
+
+  Future<void> addCourse(Course course) async {
+    var box = await Hive.openBox<Course>('coursesBox');
+    await box.add(course);
+  }
+
+  Future<List<Course>> getCourses() async {
+    var box = await Hive.openBox<Course>('coursesBox');
+    return box.values.toList();
+  }
+
+  void registerCourseToHive(
+      String courseCode, int creditUnit, String grade) async {
+    Course newCourse = Course(
+      courseCode: courseCode,
+      creditUnit: creditUnit,
+      grade: grade,
+    );
+    await addCourse(newCourse);
+  }
+
+  void loadCourses() async {
+    List<Course> courses = await getCourses();
+    log('Courses: $courses');
   }
 }
