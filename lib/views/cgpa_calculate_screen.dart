@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:student_assess/view_model/database/courses_model.dart';
 import 'package:student_assess/view_model/providers/cgpa_calculator_provider.dart';
 import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
@@ -31,63 +33,83 @@ class CgpaCalculateScreen extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: (cgpaProvider.courses.isNotEmpty)
-                    ? ListView.builder(
-                        itemCount: cgpaProvider.courses.length,
-                        itemBuilder: (context, index) {
-                          final course = cgpaProvider.courses[index];
-                          return ListTile(
-                            contentPadding:
-                                EdgeInsetsDirectional.symmetric(vertical: 8.sp),
-                            title: Text(
-                              course.courseCode,
-                              style: 18.w600,
-                            ),
-                            subtitle: Container(
-                              decoration: BoxDecoration(
-                                  color: AppColor.grey.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12.r)),
-                              child: DropdownButton<String>(
-                                value: cgpaProvider.selectedGrades[course],
-                                isExpanded: true,
-                                underline: const SizedBox.shrink(),
-                                borderRadius: BorderRadius.circular(12.r),
-                                alignment: Alignment.bottomCenter,
-                                elevation: 0,
-                                menuWidth: 100.w,
-                                items: cgpaProvider.grades.keys.map((grade) {
-                                  return DropdownMenuItem(
-                                    value: grade,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 20.sp),
-                                      child: Text(
-                                        grade,
-                                        style: 28.w400,
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  cgpaProvider.updateSelectedGrade(
-                                      course, value);
-                                },
+                  child: FutureBuilder(
+                      future: Hive.openBox<Course>("coursesBox"),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          if (cgpaProvider.hiveCourses.isEmpty) {
+                            return Center(
+                              child: Text(
+                                "No Courses registered yet!",
+                                style: 18.w700,
                               ),
-                            ),
-                          );
-                        },
-                      )
-                    : Center(
-                        child: Text(
-                          "No Courses registered yet!",
-                          style: 18.w700,
-                        ),
-                      ),
-              ),
+                            );
+                          } else {
+                            return ListView.builder(
+                              itemCount: cgpaProvider.hiveCourses.length,
+                              itemBuilder: (context, index) {
+                                final course = cgpaProvider.hiveCourses[index];
+                                return ListTile(
+                                  contentPadding:
+                                      EdgeInsetsDirectional.symmetric(
+                                          vertical: 8.sp),
+                                  title: Text(
+                                    course.courseCode,
+                                    style: 18.w600,
+                                  ),
+                                  subtitle: Container(
+                                    decoration: BoxDecoration(
+                                        color: AppColor.grey.withOpacity(0.1),
+                                        borderRadius:
+                                            BorderRadius.circular(12.r)),
+                                    child: DropdownButton<String>(
+                                      value: cgpaProvider
+                                          .selectedGradesInHIve[course],
+                                      isExpanded: true,
+                                      underline: const SizedBox.shrink(),
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      alignment: Alignment.bottomCenter,
+                                      elevation: 0,
+                                      menuWidth: 100.w,
+                                      items:
+                                          cgpaProvider.grades.keys.map((grade) {
+                                        return DropdownMenuItem(
+                                          value: grade,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20.sp),
+                                            child: Text(
+                                              grade,
+                                              style: 28.w400,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        cgpaProvider.updateSelectedGradeInHive(
+                                            course, value);
+                                      },
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    "${course.creditUnit} Credit Unit",
+                                    style: 16.w400,
+                                  ),
+                                  titleAlignment: ListTileTitleAlignment.center,
+                                );
+                              },
+                            );
+                          }
+                        }
+                      })),
               StudentAssessButton(
                   pressedAction: () {
-                    if (cgpaProvider.courses.isNotEmpty) {
-                      cgpaProvider.calculateCGPA();
+                    if (cgpaProvider.hiveCourses.isNotEmpty) {
+                      cgpaProvider.calculateCGPAHive();
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
@@ -102,10 +124,10 @@ class CgpaCalculateScreen extends StatelessWidget {
                     } else {}
                   },
                   buttonText: "Calculate CGPA",
-                  buttonColor: cgpaProvider.courses.isNotEmpty
+                  buttonColor: cgpaProvider.hiveCourses.isNotEmpty
                       ? AppColor.blue
                       : AppColor.grey.withOpacity(0.1),
-                  buttonTextColor: cgpaProvider.courses.isNotEmpty
+                  buttonTextColor: cgpaProvider.hiveCourses.isNotEmpty
                       ? AppColor.black
                       : AppColor.grey)
             ],

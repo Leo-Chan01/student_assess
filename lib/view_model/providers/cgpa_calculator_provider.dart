@@ -3,14 +3,23 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:student_assess/models/course_model.dart';
+import 'package:student_assess/view_model/database/courses_model.dart'
+    as hive_course;
 
 class CgpaCalculatorProvider extends ChangeNotifier {
+  CgpaCalculatorProvider() {
+    getCoursesFromHive();
+  }
+
   int _selectedCreditUnit = 1;
   int get selectedCreditUnit => _selectedCreditUnit;
 
   // ignore: prefer_final_fields
   List<Course> _courses = [];
   List<Course> get courses => _courses;
+
+  List<hive_course.Course> _hiveCourses = [];
+  List<hive_course.Course> get hiveCourses => _hiveCourses;
 
   double _cgpa = 0;
   double get cgpa => _cgpa;
@@ -35,6 +44,10 @@ class CgpaCalculatorProvider extends ChangeNotifier {
   // ignore: prefer_final_fields
   Map<Course, String> _selectedGrades = {};
   Map<Course, String> get selectedGrades => _selectedGrades;
+
+  Map<hive_course.Course, String> _selectedGradesInHive = {};
+  Map<hive_course.Course, String> get selectedGradesInHIve =>
+      _selectedGradesInHive;
 
   void calculateCGPA() {
     double totalGP = 0;
@@ -78,36 +91,83 @@ class CgpaCalculatorProvider extends ChangeNotifier {
 
   //HIVE ADDITION
 
-  Future<void> addCourse(Course course) async {
+  void calculateCGPAHive() {
+    double totalGP = 0;
+    int totalCreditUnits = 0;
+
+    for (var course in _hiveCourses) {
+      int gradeValue = grades[selectedGradesInHIve[course]]!;
+      totalGP += gradeValue * course.creditUnit;
+      totalCreditUnits += course.creditUnit;
+    }
+
+    _cgpa = totalGP / totalCreditUnits;
+    notifyListeners();
+    log("CGPA is $_cgpa");
+  }
+
+  void updateSelectedGradeInHive(hive_course.Course course, String? value) {
+    _selectedGradesInHive[course] = value!;
+    notifyListeners();
+  }
+
+  void registerCourseToHive({required String courseCode}) async {
+    hive_course.Course newCourse = hive_course.Course(
+      courseCode: courseCode,
+      creditUnit: _selectedCreditUnit,
+      grade: 'N/A',
+    );
+    await addCourseToHive(newCourse);
+  }
+
+  Future<void> addCourseToHive(hive_course.Course course) async {
     _isRegisteringCourse = true;
     notifyListeners();
-    var box = await Hive.openBox<Course>('coursesBox');
-    await box.add(course);
+    var courseBox = await Hive.openBox<hive_course.Course>('coursesBox');
+    await courseBox.add(course);
+    _hiveCourses = courseBox.values.toList();
+    log("Hive courses are $_hiveCourses");
     _isRegisteringCourse = false;
     notifyListeners();
   }
 
-  Future<List<Course>> getCourses() async {
-    var box = await Hive.openBox<Course>('coursesBox');
-    return box.values.toList();
-  }
+  void removeCourseFromHive(String courseCode) async {
+    var courseBox = Hive.box<hive_course.Course>('coursesBox');
 
-  void registerCourseToHive(
-      String courseCode, int creditUnit, String grade) async {
-    Course newCourse = Course(
-      courseCode: courseCode,
-      creditUnit: creditUnit,
-      grade: grade,
+    final keyToDelete = courseBox.keys.firstWhere(
+      (key) => courseBox.get(key)?.courseCode == courseCode,
+      orElse: () => null,
     );
-    await addCourse(newCourse);
+
+    if (keyToDelete != null) {
+      await courseBox.delete(keyToDelete);
+      notifyListeners();
+      log('This course $courseCode deleted');
+      log("Removed course $courseCode");
+      _hiveCourses = courseBox.values.toList();
+      notifyListeners();
+      log("List of hive courses now is $_hiveCourses and in hive we have ${courseBox.values.toList()}");
+    } else {
+      log('Course not found');
+    }
+    log("Remaining Courses are ${courseBox.values.toList()}");
+    notifyListeners();
   }
 
-  void loadCourses() async {
+  void loadCoursesFromHive() async {
     _isFetching = true;
     notifyListeners();
-    List<Course> courses = await getCourses();
+    List<hive_course.Course> courses = await getCoursesFromHive();
     log('Courses: $courses');
     _isFetching = false;
     notifyListeners();
+  }
+
+  Future<List<hive_course.Course>> getCoursesFromHive() async {
+    var box = await Hive.openBox<hive_course.Course>('coursesBox');
+    _hiveCourses = box.values.toList();
+    notifyListeners();
+    log("Hive courses fetched are $_hiveCourses");
+    return _hiveCourses;
   }
 }
