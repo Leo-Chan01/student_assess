@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:student_assess/view_model/database/courses_model.dart';
 import 'package:student_assess/view_model/providers/cgpa_calculator_provider.dart';
 import 'package:student_assess/view_model/providers/file_picker_provider.dart';
+import 'package:student_assess/view_model/providers/navigation_provider.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/config/screen_size.dart';
 import 'package:student_assess/view_model/utils/config/theme.dart';
@@ -20,6 +21,8 @@ void main() async {
         create: (context) => FilePickerProvider()),
     ChangeNotifierProvider<CgpaCalculatorProvider>(
         create: (context) => CgpaCalculatorProvider()),
+    ChangeNotifierProvider<NavigationProvider>(
+        create: (context) => NavigationProvider()),
   ], child: const MyApp()));
 }
 

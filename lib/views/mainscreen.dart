@@ -1,26 +1,39 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:student_assess/view_model/providers/navigation_provider.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/config/theme.dart';
 import 'package:student_assess/views/cgpa_mainscreen.dart';
 import 'package:student_assess/views/student_assess_page.dart';
 import 'package:student_assess/views/student_profile_page.dart';
 
+// ignore: must_be_immutable
 class Mainscreen extends StatelessWidget {
   Mainscreen({super.key});
 
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  late PersistentTabController _controller;
 
   @override
   Widget build(BuildContext context) {
+    var navigationProvider = context.watch<NavigationProvider>();
+
+    _controller = PersistentTabController(
+        initialIndex: navigationProvider.selectedBottomNavItem);
+        
     return PersistentTabView(
       context,
       controller: _controller,
       screens: _buildScreens(),
-      items: _navBarsItems(),
+      items: _navBarsItems(navigationProvider),
+      onItemSelected: (value) {
+        log("Selected Item is $value");
+        navigationProvider.updateSelectedNavItem(value);
+      },
       handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset: true, stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: true,
@@ -54,7 +67,8 @@ class Mainscreen extends StatelessWidget {
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
+  List<PersistentBottomNavBarItem> _navBarsItems(
+      NavigationProvider navProvider) {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
