@@ -29,7 +29,12 @@ class CgpaCalculateScreen extends StatelessWidget {
                       context.go(AppRoutes.homeRoute);
                     },
                   ),
-                  Text("Calculate your CGPA", style: 36.w700),
+                  Flexible(
+                      child: Text(
+                    "Calculate your CGPA",
+                    style: 32.w700,
+                    overflow: TextOverflow.ellipsis,
+                  )),
                 ],
               ),
               Expanded(

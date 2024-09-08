@@ -34,9 +34,12 @@ class CgpaRegisterScreen extends StatelessWidget {
                       context.go(AppRoutes.homeRoute);
                     },
                   ),
-                  Text(
-                    "Course Registration",
-                    style: 36.w700,
+                  Flexible(
+                    child: Text(
+                      "Course Registration",
+                      style: 32.w700,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
