@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:student_assess/view_model/providers/navigation_provider.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/config/theme.dart';
-import 'package:student_assess/views/cgpa_mainscreen.dart';
-import 'package:student_assess/views/student_assess_page.dart';
-import 'package:student_assess/views/student_profile_page.dart';
+import 'package:student_assess/views/cgpa/cgpa_mainscreen.dart';
+import 'package:student_assess/views/student_assesment/student_assess_page.dart';
+import 'package:student_assess/views/student_profile/student_profile_page.dart';
 
 // ignore: must_be_immutable
 class Mainscreen extends StatelessWidget {
