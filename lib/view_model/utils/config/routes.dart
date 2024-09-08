@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
-import 'package:student_assess/views/cgpa_calculate_screen.dart';
-import 'package:student_assess/views/cgpa_mainscreen.dart';
-import 'package:student_assess/views/cgpa_register_screen.dart';
+import 'package:student_assess/views/cgpa/cgpa_calculate_screen.dart';
+import 'package:student_assess/views/cgpa/cgpa_mainscreen.dart';
+import 'package:student_assess/views/cgpa/cgpa_register_screen.dart';
 import 'package:student_assess/views/mainscreen.dart';
 import 'package:student_assess/views/splash_screen.dart';
-import 'package:student_assess/views/student_assess_page.dart';
-import 'package:student_assess/views/student_profile_page.dart';
+import 'package:student_assess/views/student_assesment/student_assess_page.dart';
+import 'package:student_assess/views/student_profile/student_profile_page.dart';
 
 class AppRoutes {
   static String splashRoute = '/';

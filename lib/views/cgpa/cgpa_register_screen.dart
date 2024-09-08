@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,9 +34,12 @@ class CgpaRegisterScreen extends StatelessWidget {
                       context.go(AppRoutes.homeRoute);
                     },
                   ),
-                  Text(
-                    "Course Registration",
-                    style: 36.w700,
+                  Flexible(
+                    child: Text(
+                      "Course Registration",
+                      style: 32.w700,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -69,7 +74,7 @@ class CgpaRegisterScreen extends StatelessWidget {
                         _courseController.text.trim().toString();
                     if (courseCode.isEmpty) {
                     } else {
-                      cgpaProvider.registerCourse(
+                      cgpaProvider.registerCourseToHive(
                           courseCode: _courseController.text.trim().toString());
                     }
                   },
@@ -78,21 +83,22 @@ class CgpaRegisterScreen extends StatelessWidget {
                   buttonTextColor: AppColor.white),
               Expanded(
                 child: ListView.builder(
-                  itemCount: cgpaProvider.courses.length,
+                  itemCount: cgpaProvider.hiveCourses.length,
                   itemBuilder: (context, index) {
+                    log("Hive courses are ${cgpaProvider.hiveCourses[index].courseCode}");
                     return ListTile(
                       title: Text(
-                        cgpaProvider.courses[index].courseCode,
+                        cgpaProvider.hiveCourses[index].courseCode,
                         style: 18.w600,
                       ),
                       subtitle: Text(
-                        'Credit Unit: ${cgpaProvider.courses[index].creditUnit}',
+                        'Credit Unit: ${cgpaProvider.hiveCourses[index].creditUnit}',
                         style: 14.w400,
                       ),
                       trailing: InkWell(
                         onTap: () {
-                          cgpaProvider.removeCourse(
-                              cgpaProvider.courses[index].courseCode);
+                          cgpaProvider.removeCourseFromHive(
+                              cgpaProvider.hiveCourses[index].courseCode);
                         },
                         child: const Icon(
                           CupertinoIcons.minus,

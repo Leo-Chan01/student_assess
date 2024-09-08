@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'courses_model.g.dart';  // For code generation
+part 'courses_model.g.dart'; // For code generation
 
 @HiveType(typeId: 0)
 class Course {
@@ -16,6 +16,6 @@ class Course {
   Course({
     required this.courseCode,
     required this.creditUnit,
-    required this.grade,
+    this.grade = "N/A",
   });
 }
