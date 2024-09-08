@@ -45,6 +45,7 @@ class CgpaCalculatorProvider extends ChangeNotifier {
   Map<Course, String> _selectedGrades = {};
   Map<Course, String> get selectedGrades => _selectedGrades;
 
+  // ignore: prefer_final_fields
   Map<hive_course.Course, String> _selectedGradesInHive = {};
   Map<hive_course.Course, String> get selectedGradesInHIve =>
       _selectedGradesInHive;
