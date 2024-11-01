@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
+import 'package:student_assess/view_model/utils/sa_informants.dart';
 
 class CgpaMainscreen extends StatelessWidget {
   const CgpaMainscreen({super.key});
@@ -71,7 +72,12 @@ class CgpaMainscreen extends StatelessWidget {
                 width: double.infinity,
                 child: MaterialButton(
                   elevation: 0,
-                  onPressed: () {},
+                  onPressed: () {
+                    StudentAssessInformant.showPopupDialog(
+                        context: context,
+                        icon: const Icon(Icons.punch_clock_rounded),
+                        message: "Feature coming in next update");
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r)),
                   color: AppColor.grey.withOpacity(0.1),
