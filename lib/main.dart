@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:student_assess/firebase_options.dart';
 import 'package:student_assess/view_model/database/courses_model.dart';
+import 'package:student_assess/view_model/providers/auth_provider.dart';
 import 'package:student_assess/view_model/providers/cgpa_calculator_provider.dart';
 import 'package:student_assess/view_model/providers/file_picker_provider.dart';
 import 'package:student_assess/view_model/providers/navigation_provider.dart';
@@ -23,6 +24,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<AuthProvider>(
+          create: (context) => AuthProvider(),
+        ),
         ChangeNotifierProvider<FilePickerProvider>(
           create: (context) => FilePickerProvider(),
         ),

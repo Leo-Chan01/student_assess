@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:student_assess/views/auth_screen.dart';
 import 'package:student_assess/views/cgpa/cgpa_calculate_screen.dart';
 import 'package:student_assess/views/cgpa/cgpa_mainscreen.dart';
 import 'package:student_assess/views/cgpa/cgpa_register_screen.dart';
@@ -9,6 +10,7 @@ import 'package:student_assess/views/student_profile/student_profile_page.dart';
 
 class AppRoutes {
   static String splashRoute = '/';
+  static String authRoute = '/auth';
   static String homeRoute = '/home';
   static String studentAssessRoute = '/student-assess';
   static String studentProfileRoute = '/student-profile';
@@ -21,6 +23,10 @@ class AppRoutes {
       GoRoute(
         path: AppRoutes.splashRoute,
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.authRoute,
+        builder: (context, state) => const AuthScreen(),
       ),
       GoRoute(
         path: AppRoutes.homeRoute,

@@ -1,8 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:student_assess/view_model/providers/auth_provider.dart';
 import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
@@ -51,12 +54,28 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _startAnimationSequence();
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) => _initializeApp(),
+    );
+  }
 
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
+  void _initializeApp() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    // Initialize authentication state
+    await authProvider.initialize();
+
+    // Wait for animations to complete (3 seconds)
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (mounted) {
+      // Navigate based on authentication state
+      if (authProvider.isAuthenticated) {
         context.go(AppRoutes.homeRoute);
+      } else {
+        context.go(AppRoutes.authRoute);
       }
-    });
+    }
   }
 
   void _startAnimationSequence() async {
