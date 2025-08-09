@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -57,7 +56,7 @@ class StudentAssessPage extends StatelessWidget {
                       Text(
                         "Test your understanding with our AI-powered assessment system:",
                         style: 16.w400.copyWith(
-                            color: AppColor.onSurface.withOpacity(0.8)),
+                            color: AppColor.onSurface.withValues(alpha: 0.8)),
                       ),
                       SizedBox(height: 12.h),
                       _buildInstructionStep(
@@ -102,7 +101,7 @@ class StudentAssessPage extends StatelessWidget {
                                 width: 40.w,
                                 height: 4.h,
                                 decoration: BoxDecoration(
-                                  color: AppColor.grey.withOpacity(0.3),
+                                  color: AppColor.grey.withValues(alpha: 0.3),
                                   borderRadius: BorderRadius.circular(2.sp),
                                 ),
                               ),
@@ -151,8 +150,8 @@ class StudentAssessPage extends StatelessWidget {
                           padding: EdgeInsets.all(12.sp),
                           decoration: BoxDecoration(
                             color: fileProvider.selectedAsset != null
-                                ? AppColor.primary.withOpacity(0.1)
-                                : AppColor.grey.withOpacity(0.1),
+                                ? AppColor.primary.withValues(alpha: 0.1)
+                                : AppColor.grey.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8.sp),
                           ),
                           child: Icon(
@@ -235,7 +234,7 @@ class StudentAssessPage extends StatelessWidget {
                         SizedBox(
                           width: 20.w,
                           height: 20.h,
-                          child: CircularProgressIndicator(
+                          child: const CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor:
                                 AlwaysStoppedAnimation<Color>(AppColor.primary),
@@ -255,7 +254,7 @@ class StudentAssessPage extends StatelessWidget {
                   pressedAction: () async {
                     if (fileProvider.selectedAsset == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text("Please upload a file first"),
                           backgroundColor: AppColor.error,
                         ),
@@ -271,7 +270,7 @@ class StudentAssessPage extends StatelessWidget {
                         });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text("Please write a summary first"),
                             backgroundColor: AppColor.warning,
                           ),
@@ -298,7 +297,7 @@ class StudentAssessPage extends StatelessWidget {
         Container(
           width: 24.w,
           height: 24.h,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColor.primary,
             shape: BoxShape.circle,
           ),
@@ -319,7 +318,9 @@ class StudentAssessPage extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: 14.w400.copyWith(color: AppColor.onSurface.withOpacity(0.8)),
+            style: 14
+                .w400
+                .copyWith(color: AppColor.onSurface.withValues(alpha: 0.8)),
           ),
         ),
       ],
@@ -331,7 +332,7 @@ class StudentAssessPage extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
-        backgroundColor: color.withOpacity(0.1),
+        backgroundColor: color.withValues(alpha: 0.1),
         foregroundColor: color,
         elevation: 0,
         padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -382,7 +383,7 @@ class StudentAssessPage extends StatelessWidget {
               height: 120.h,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: scoreColor.withOpacity(0.1),
+                color: scoreColor.withValues(alpha: 0.1),
                 border: Border.all(color: scoreColor, width: 3),
               ),
               child: Column(
@@ -413,7 +414,7 @@ class StudentAssessPage extends StatelessWidget {
                 _getScoreDescription(score),
                 style: 14
                     .w400
-                    .copyWith(color: AppColor.onSurface.withOpacity(0.7)),
+                    .copyWith(color: AppColor.onSurface.withValues(alpha: 0.7)),
                 textAlign: TextAlign.center,
               ),
             ]
@@ -440,11 +441,13 @@ class StudentAssessPage extends StatelessWidget {
   }
 
   String _getScoreDescription(double score) {
-    if (score >= 80)
+    if (score >= 80) {
       return "Your summary shows excellent understanding of the material!";
+    }
     if (score >= 70) return "Good work! Your summary covers most key points.";
-    if (score >= 40)
+    if (score >= 40) {
       return "Your summary captures some important concepts. Try to include more details.";
+    }
     return "Your summary needs more detail. Focus on the main concepts and key information.";
   }
 }

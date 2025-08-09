@@ -68,7 +68,8 @@ class CgpaCalculateScreen extends StatelessWidget {
                                   ),
                                   subtitle: Container(
                                     decoration: BoxDecoration(
-                                        color: AppColor.grey.withOpacity(0.1),
+                                        color: AppColor.grey
+                                            .withValues(alpha: 0.1),
                                         borderRadius:
                                             BorderRadius.circular(12.r)),
                                     child: DropdownButton<String>(
@@ -131,7 +132,7 @@ class CgpaCalculateScreen extends StatelessWidget {
                   buttonText: "Calculate CGPA",
                   buttonColor: cgpaProvider.hiveCourses.isNotEmpty
                       ? AppColor.blue
-                      : AppColor.grey.withOpacity(0.1),
+                      : AppColor.grey.withValues(alpha: 0.1),
                   buttonTextColor: cgpaProvider.hiveCourses.isNotEmpty
                       ? AppColor.black
                       : AppColor.grey)

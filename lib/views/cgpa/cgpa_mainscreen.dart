@@ -74,7 +74,7 @@ class CgpaMainscreen extends StatelessWidget {
                   onPressed: () {},
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r)),
-                  color: AppColor.grey.withOpacity(0.1),
+                  color: AppColor.grey.withValues(alpha: 0.1),
                   textColor: AppColor.darkGrey,
                   child: Text(
                     "Get Course Materials",

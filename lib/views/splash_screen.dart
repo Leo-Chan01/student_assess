@@ -102,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen>
                         borderRadius: BorderRadius.circular(20.r),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 20,
                             spreadRadius: 5,
                           ),
@@ -137,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen>
                       Text(
                         "AI-Powered Study Assistant",
                         style: 16.w400.copyWith(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                               letterSpacing: 0.5,
                             ),
                       ),
@@ -145,7 +145,7 @@ class _SplashScreenState extends State<SplashScreen>
                       SizedBox(
                         width: 200.w,
                         child: LinearProgressIndicator(
-                          backgroundColor: Colors.white.withOpacity(0.3),
+                          backgroundColor: Colors.white.withValues(alpha: 0.3),
                           valueColor:
                               const AlwaysStoppedAnimation<Color>(Colors.white),
                           minHeight: 3.h,

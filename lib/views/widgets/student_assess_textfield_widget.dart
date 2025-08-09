@@ -35,8 +35,9 @@ class StudentAssessTextField extends StatelessWidget {
           color: AppColor.grey,
           fontSize: 14.sp,
         ),
-        fillColor:
-            enabled ? AppColor.background : AppColor.grey.withOpacity(0.1),
+        fillColor: enabled
+            ? AppColor.background
+            : AppColor.grey.withValues(alpha: 0.1),
         filled: true,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
