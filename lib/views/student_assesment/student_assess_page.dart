@@ -26,154 +26,425 @@ class StudentAssessPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Assessment",
                 style: 32.w700,
               ),
               SizedBox(height: 28.h),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(20.sp),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.lightbulb_outline,
+                            color: AppColor.primary,
+                            size: 24.sp,
+                          ),
+                          SizedBox(width: 12.w),
+                          Text(
+                            "How it works",
+                            style: 18.w600,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        "Test your understanding with our AI-powered assessment system:",
+                        style: 16.w400.copyWith(
+                            color: AppColor.onSurface.withOpacity(0.8)),
+                      ),
+                      SizedBox(height: 12.h),
+                      _buildInstructionStep(
+                          "1",
+                          "Upload course material (PDF or Image)",
+                          Icons.upload_file),
+                      SizedBox(height: 8.h),
+                      _buildInstructionStep("2",
+                          "Write a comprehensive summary", Icons.edit_note),
+                      SizedBox(height: 8.h),
+                      _buildInstructionStep("3",
+                          "Get instant AI-powered scoring", Icons.analytics),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 32.h),
               Text(
-                "Want to know how well you understand this course? Let's test that!",
-                style: 20.w400,
+                "Upload Material",
+                style: 20.w600,
               ),
               SizedBox(height: 16.h),
-              Text(
-                "1. Upload the course \n2. Write your summary\n3. Click on Submit Summary and see how well you score!",
-                style: 16.w400,
-              ),
-              SizedBox(height: 64.h),
-              Container(
-                height: 80.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppColor.white,
-                    borderRadius: BorderRadius.circular(12.r)),
-                child: Center(
-                    child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                  child: InkWell(
-                    onTap: () {
-                      showCupertinoModalBottomSheet(
-                        context: context,
-                        topRadius: Radius.circular(12.sp),
-                        builder: (context) => SizedBox(
-                          height: 100.h,
-                          child: Scaffold(
-                            body: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 24.sp, vertical: 16.sp),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+              Card(
+                child: InkWell(
+                  onTap: () {
+                    showCupertinoModalBottomSheet(
+                      context: context,
+                      topRadius: Radius.circular(20.sp),
+                      builder: (context) => Container(
+                        height: 180.h,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20.sp)),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 24.sp, vertical: 20.sp),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 40.w,
+                                height: 4.h,
+                                decoration: BoxDecoration(
+                                  color: AppColor.grey.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(2.sp),
+                                ),
+                              ),
+                              SizedBox(height: 24.h),
+                              Text(
+                                "Choose File Type",
+                                style: 18.w600,
+                              ),
+                              SizedBox(height: 20.h),
+                              Row(
                                 children: [
-                                  MaterialButton(
-                                    onPressed: () async {
-                                      await fileProvider.pickPDF();
-                                    },
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.sp)),
-                                    color: AppColor.black,
-                                    textColor: AppColor.white,
-                                    child: Text(
-                                      "PDF File",
-                                      style: 16.w600,
+                                  Expanded(
+                                    child: _buildFileTypeButton(
+                                      context,
+                                      "PDF Document",
+                                      Icons.picture_as_pdf,
+                                      AppColor.error,
+                                      () async => await fileProvider.pickPDF(),
                                     ),
                                   ),
-                                  SizedBox(width: 50.w),
-                                  MaterialButton(
-                                    onPressed: () async {
-                                      await fileProvider.pickImageFile(context);
-                                    },
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.sp)),
-                                    color: AppColor.grey.withOpacity(0.1),
-                                    textColor: AppColor.black,
-                                    child: Text(
-                                      "Image",
-                                      style: 16.w600,
+                                  SizedBox(width: 16.w),
+                                  Expanded(
+                                    child: _buildFileTypeButton(
+                                      context,
+                                      "Image File",
+                                      Icons.image,
+                                      AppColor.primary,
+                                      () async => await fileProvider
+                                          .pickImageFile(context),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                      );
-                    },
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(12.sp),
+                  child: Container(
+                    padding: EdgeInsets.all(20.sp),
                     child: Row(
                       children: [
-                        Icon(
-                          CupertinoIcons.doc_richtext,
-                          color: AppColor.orange,
-                          size: 34.sp,
+                        Container(
+                          padding: EdgeInsets.all(12.sp),
+                          decoration: BoxDecoration(
+                            color: fileProvider.selectedAsset != null
+                                ? AppColor.primary.withOpacity(0.1)
+                                : AppColor.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8.sp),
+                          ),
+                          child: Icon(
+                            fileProvider.selectedAsset != null
+                                ? Icons.check_circle
+                                : Icons.upload_file,
+                            color: fileProvider.selectedAsset != null
+                                ? AppColor.primary
+                                : AppColor.grey,
+                            size: 24.sp,
+                          ),
                         ),
                         SizedBox(width: 16.w),
-                        Text(
-                          fileProvider.fileName,
-                          style: 14.w600,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                fileProvider.selectedAsset != null
+                                    ? "File Selected"
+                                    : "No file selected",
+                                style: 14.w600.copyWith(
+                                      color: fileProvider.selectedAsset != null
+                                          ? AppColor.primary
+                                          : AppColor.grey,
+                                    ),
+                              ),
+                              if (fileProvider.selectedAsset != null) ...[
+                                SizedBox(height: 4.h),
+                                Text(
+                                  fileProvider.fileName,
+                                  style: 12.w400.copyWith(color: AppColor.grey),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ] else ...[
+                                SizedBox(height: 4.h),
+                                Text(
+                                  "Tap to upload PDF or image",
+                                  style: 12.w400.copyWith(color: AppColor.grey),
+                                ),
+                              ]
+                            ],
+                          ),
                         ),
-                        const Spacer(),
-                        Icon(CupertinoIcons.cloud_upload, color: AppColor.grey)
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColor.grey,
+                          size: 16.sp,
+                        ),
                       ],
                     ),
                   ),
-                )),
+                ),
               ),
               SizedBox(height: 32.h),
-              StudentAssessTextField(
-                  inputcontroller: inputcontroller,
-                  hintText: "Write your summary here"),
-              SizedBox(height: 32.h),
-              StudentAssessButton(
-                pressedAction: () async {
-                  if (fileProvider.selectedAsset == null) {
-                  } else {
-                    if (inputcontroller.text.trim().toString().isNotEmpty) {
-                      log("In here");
-                      await fileProvider
-                          .updateUserInput(
-                              inputcontroller.text.trim().toString())
-                          .then((value) {
-                        // fileProvider.calculateSimilarity();
-                        fileProvider.calculateSimilarityFromAPI();
-                      });
-                    } else {}
-                  }
-                },
-                buttonText: fileProvider.feedbackText,
-                buttonColor: AppColor.black,
-                buttonTextColor: AppColor.white,
+              Text(
+                "Write Your Summary",
+                style: 20.w600,
               ),
-              SizedBox(height: 64.h),
-              Text("Assessment Score",
-                  textAlign: TextAlign.left, style: 30.w600),
-              SizedBox(height: 24.h),
-              Container(
-                height: 150.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppColor.grey.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12.sp)),
-                child: Center(
-                    child: Text(
-                  "${fileProvider.similarityScore.round()}%",
-                  style: 28.w600.copyWith(
-                      color: (fileProvider.similarityScore < 40)
-                          ? Colors.red
-                          : (fileProvider.similarityScore > 40 &&
-                                  fileProvider.similarityScore < 70)
-                              ? AppColor.orange
-                              : AppColor.blue),
-                )),
-              )
+              SizedBox(height: 16.h),
+              Card(
+                child: Padding(
+                  padding: EdgeInsets.all(4.sp),
+                  child: StudentAssessTextField(
+                    inputcontroller: inputcontroller,
+                    hintText:
+                        "Write a comprehensive summary of the material...",
+                    maxLinesNeeded: 8,
+                  ),
+                ),
+              ),
+              SizedBox(height: 32.h),
+              if (fileProvider.isLoading)
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.sp),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(AppColor.primary),
+                          ),
+                        ),
+                        SizedBox(width: 16.w),
+                        Text(
+                          fileProvider.feedbackText,
+                          style: 16.w500,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                StudentAssessButton(
+                  pressedAction: () async {
+                    if (fileProvider.selectedAsset == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Please upload a file first"),
+                          backgroundColor: AppColor.error,
+                        ),
+                      );
+                    } else {
+                      if (inputcontroller.text.trim().toString().isNotEmpty) {
+                        log("In here");
+                        await fileProvider
+                            .updateUserInput(
+                                inputcontroller.text.trim().toString())
+                            .then((value) {
+                          fileProvider.calculateSimilarityFromAPI();
+                        });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Please write a summary first"),
+                            backgroundColor: AppColor.warning,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  buttonText: fileProvider.feedbackText,
+                  buttonColor: AppColor.primary,
+                  buttonTextColor: AppColor.background,
+                ),
+              SizedBox(height: 32.h),
+              _buildScoreCard(fileProvider.similarityScore),
             ],
           ),
         ),
       ),
     ));
+  }
+
+  Widget _buildInstructionStep(String number, String text, IconData icon) {
+    return Row(
+      children: [
+        Container(
+          width: 24.w,
+          height: 24.h,
+          decoration: BoxDecoration(
+            color: AppColor.primary,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Text(
+              number,
+              style: 12.w600.copyWith(color: Colors.white),
+            ),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        Icon(
+          icon,
+          size: 16.sp,
+          color: AppColor.grey,
+        ),
+        SizedBox(width: 8.w),
+        Expanded(
+          child: Text(
+            text,
+            style: 14.w400.copyWith(color: AppColor.onSurface.withOpacity(0.8)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFileTypeButton(BuildContext context, String title, IconData icon,
+      Color color, VoidCallback onTap) {
+    return ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color.withOpacity(0.1),
+        foregroundColor: color,
+        elevation: 0,
+        padding: EdgeInsets.symmetric(vertical: 16.h),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.sp)),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, size: 24.sp),
+          SizedBox(height: 8.h),
+          Text(
+            title,
+            style: 12.w500,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScoreCard(double score) {
+    Color scoreColor = AppColor.getScoreColor(score);
+    String scoreText = _getScoreText(score);
+    IconData scoreIcon = _getScoreIcon(score);
+
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(24.sp),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.analytics,
+                  color: AppColor.primary,
+                  size: 24.sp,
+                ),
+                SizedBox(width: 12.w),
+                Text(
+                  "Assessment Score",
+                  style: 20.w600,
+                ),
+              ],
+            ),
+            SizedBox(height: 24.h),
+            Container(
+              width: 120.w,
+              height: 120.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: scoreColor.withOpacity(0.1),
+                border: Border.all(color: scoreColor, width: 3),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    scoreIcon,
+                    color: scoreColor,
+                    size: 32.sp,
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    "${score.round()}%",
+                    style: 24.w700.copyWith(color: scoreColor),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              scoreText,
+              style: 16.w500.copyWith(color: scoreColor),
+              textAlign: TextAlign.center,
+            ),
+            if (score > 0) ...[
+              SizedBox(height: 16.h),
+              Text(
+                _getScoreDescription(score),
+                style: 14
+                    .w400
+                    .copyWith(color: AppColor.onSurface.withOpacity(0.7)),
+                textAlign: TextAlign.center,
+              ),
+            ]
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getScoreText(double score) {
+    if (score >= 80) return "Excellent!";
+    if (score >= 70) return "Good Job!";
+    if (score >= 40) return "Not Bad";
+    if (score > 0) return "Needs Improvement";
+    return "No Score Yet";
+  }
+
+  IconData _getScoreIcon(double score) {
+    if (score >= 80) return Icons.emoji_events;
+    if (score >= 70) return Icons.thumb_up;
+    if (score >= 40) return Icons.trending_up;
+    if (score > 0) return Icons.trending_down;
+    return Icons.help_outline;
+  }
+
+  String _getScoreDescription(double score) {
+    if (score >= 80)
+      return "Your summary shows excellent understanding of the material!";
+    if (score >= 70) return "Good work! Your summary covers most key points.";
+    if (score >= 40)
+      return "Your summary captures some important concepts. Try to include more details.";
+    return "Your summary needs more detail. Focus on the main concepts and key information.";
   }
 }

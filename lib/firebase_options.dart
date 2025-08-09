@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '764613371253',
     projectId: 'thephenomenalephraim',
     storageBucket: 'thephenomenalephraim.appspot.com',
-    iosBundleId: 'com.example.studentAssess',
+    iosBundleId: 'com.raym.studentassess',
   );
 }

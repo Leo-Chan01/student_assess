@@ -1,0 +1,93 @@
+# Uncomment this line to define a global platform for your project
+platform :ios, '15.0'
+
+# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+# Force older Firebase SDK version to avoid gRPC C++ template issues
+$FirebaseSDKVersion = '9.6.0'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+def flutter_root
+  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
+  unless File.exist?(generated_xcode_build_settings_path)
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+  end
+
+  File.foreach(generated_xcode_build_settings_path) do |line|
+    matches = line.match(/FLUTTER_ROOT\=(.*)/)
+    return matches[1].strip if matches
+  end
+  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
+end
+
+require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
+
+flutter_ios_podfile_setup
+
+target 'Runner' do
+  use_frameworks!
+  use_modular_headers!
+
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+    if target.name == 'BoringSSL-GRPC'
+      target.source_build_phase.files.each do |file|
+        if file.settings && file.settings['COMPILER_FLAGS']
+          flags = file.settings['COMPILER_FLAGS'].split
+          flags.reject! { |flag| flag == '-GCC_WARN_INHIBIT_ALL_WARNINGS' }
+          file.settings['COMPILER_FLAGS'] = flags.join(' ')
+        end
+      end
+    end
+  end
+end
+
+
+# post_install do |installer|
+#   installer.pods_project.targets.each do |target|
+#     flutter_additional_ios_build_settings(target)
+    
+#     target.build_configurations.each do |config|
+#       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+#       config.build_settings['ENABLE_BITCODE'] = 'NO'
+      
+#       # Completely remove the problematic compiler flags
+#       ['OTHER_CFLAGS', 'OTHER_CPPFLAGS', 'OTHER_CPLUSPLUSFLAGS'].each do |setting|
+#         if config.build_settings[setting]
+#           flags = config.build_settings[setting]
+#           if flags.is_a?(Array)
+#             config.build_settings[setting] = flags.reject { |flag| flag.include?('-G') }
+#           elsif flags.is_a?(String)
+#             config.build_settings[setting] = flags.gsub(/-G\S*/, '').strip
+#           end
+#         end
+#       end
+      
+#       # Remove debug symbol generation that can cause -G issues
+#       config.build_settings.delete('GCC_GENERATE_DEBUGGING_SYMBOLS')
+#       config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
+      
+#       # Ensure proper architecture handling
+#       config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+#       config.build_settings['VALID_ARCHS'] = 'arm64 x86_64'
+      
+#       # Fix for simulator builds
+#       if config.name.include?('Debug')
+#         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone'
+#       end
+#     end
+#   end
+# end

@@ -1,19 +1,20 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdf_text/flutter_pdf_text.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:similarity/similarity.dart';
 import 'package:student_assess/services/api_service.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FilePickerProvider extends ChangeNotifier {
   PlatformFile? _selectedAsset;
   PlatformFile? get selectedAsset => _selectedAsset;
 
-  AssetEntity? _selectedImageAsset;
-  AssetEntity? get selectedImageAsset => _selectedImageAsset;
+  XFile? _selectedImageAsset;
+  XFile? get selectedImageAsset => _selectedImageAsset;
 
   String _fileName = "No file selected";
   String get fileName => _fileName;
@@ -31,18 +32,12 @@ class FilePickerProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> pickImageFile(BuildContext context) async {
-    List<AssetEntity>? resultList = await AssetPicker.pickAssets(
-      context,
-      pickerConfig: const AssetPickerConfig(
-        maxAssets: 1,
-        requestType: RequestType.image,
-      ),
-    );
-    if (resultList != null && resultList.isNotEmpty) {
-      _selectedImageAsset = resultList.first;
-      notifyListeners();
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-      // _extractTextFromFile(_selectedAsset!);
+    if (image != null) {
+      _selectedImageAsset = image;
+      notifyListeners();
     }
   }
 
@@ -58,17 +53,36 @@ class FilePickerProvider extends ChangeNotifier {
       _selectedAsset = file;
       notifyListeners();
 
-      File pdfFile = File(result.files.single.path!);
-      _isLoading = true;
-      _feedbackText = "...Extracting Text";
-      notifyListeners();
-      PDFDoc pdfDoc = await PDFDoc.fromFile(pdfFile);
-      String text = await pdfDoc.text;
-      _pdfText = text;
-      log("Text for this file is $_pdfText");
-      _isLoading = false;
-      _feedbackText = "Submit Summary";
-      notifyListeners();
+      try {
+        _isLoading = true;
+        _feedbackText = "...Extracting Text";
+        notifyListeners();
+
+        // Read PDF file as bytes
+        Uint8List pdfBytes = File(result.files.single.path!).readAsBytesSync();
+
+        // Load PDF document
+        PdfDocument document = PdfDocument(inputBytes: pdfBytes);
+
+        // Extract text from all pages
+        String extractedText = PdfTextExtractor(document).extractText();
+
+        // Clean up
+        document.dispose();
+
+        _pdfText = extractedText;
+        log("Text for this file is $_pdfText");
+        _isLoading = false;
+        _feedbackText = "Submit Summary";
+        notifyListeners();
+      } catch (e) {
+        log("Error extracting PDF text: $e");
+        _isLoading = false;
+        _feedbackText = "Error reading PDF";
+        _pdfText =
+            "Unable to extract text from this PDF. Please try a different file or use the image upload option.";
+        notifyListeners();
+      }
     } else {
       _fileName = "No file selected.";
       notifyListeners();

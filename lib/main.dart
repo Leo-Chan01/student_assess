@@ -20,14 +20,22 @@ void main() async {
   Hive.registerAdapter(CourseAdapter());
   await Hive.openBox<Course>('coursesBox');
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<FilePickerProvider>(
-        create: (context) => FilePickerProvider()),
-    ChangeNotifierProvider<CgpaCalculatorProvider>(
-        create: (context) => CgpaCalculatorProvider()),
-    ChangeNotifierProvider<NavigationProvider>(
-        create: (context) => NavigationProvider()),
-  ], child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<FilePickerProvider>(
+          create: (context) => FilePickerProvider(),
+        ),
+        ChangeNotifierProvider<CgpaCalculatorProvider>(
+          create: (context) => CgpaCalculatorProvider(),
+        ),
+        ChangeNotifierProvider<NavigationProvider>(
+          create: (context) => NavigationProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,25 +45,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return OrientationBuilder(builder: (context, orientation) {
-          return ScreenUtilInit(
-            designSize: DesignSizeConfig().designSize(
-              orientation: orientation,
-              constraints: constraints,
-            ),
-            minTextAdapt: true,
-            useInheritedMediaQuery: true,
-            ensureScreenSize: true,
-            rebuildFactor: (old, data) => true,
-            builder: (context, child) {
-              return MaterialApp.router(
-                title: 'Student Assess',
-                theme: AppTheme.instance.lightTheme,
-                routerConfig: AppRoutes.router,
-              );
-            },
-          );
-        });
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            return ScreenUtilInit(
+              designSize: DesignSizeConfig().designSize(
+                orientation: orientation,
+                constraints: constraints,
+              ),
+              minTextAdapt: true,
+              useInheritedMediaQuery: true,
+              ensureScreenSize: true,
+              rebuildFactor: (old, data) => true,
+              builder: (context, child) {
+                return MaterialApp.router(
+                  title: 'Student Assess',
+                  theme: AppTheme.instance.lightTheme,
+                  routerConfig: AppRoutes.router,
+                );
+              },
+            );
+          },
+        );
       },
     );
   }

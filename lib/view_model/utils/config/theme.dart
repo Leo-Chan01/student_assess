@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
 
 class AppTheme {
@@ -7,28 +7,97 @@ class AppTheme {
   AppTheme._init();
 
   final ThemeData darkTheme = ThemeData(
-    useMaterial3: false,
+    useMaterial3: true,
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color(0xFF242429),
+    colorScheme: const ColorScheme.dark(
+      primary: AppColor.primary,
+      secondary: AppColor.secondary,
+      surface: Color(0xFF1E1E1E),
+      error: AppColor.error,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onSurface: Colors.white,
+      onError: Colors.white,
+    ),
+    scaffoldBackgroundColor: const Color(0xFF121212),
     appBarTheme: AppBarTheme(
-      backgroundColor: const Color(0xFF242429),
+      backgroundColor: const Color(0xFF1E1E1E),
       centerTitle: false,
       elevation: 0,
-      titleTextStyle: 16.w600.copyWith(color: const Color(0xFFFFFFFF)),
-      iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
+      titleTextStyle: 18.w600.copyWith(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
+    ),
+    cardTheme: const CardThemeData(
+      color: Color(0xFF1E1E1E),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12))),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColor.primary,
+        foregroundColor: Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      ),
     ),
   );
 
   final ThemeData lightTheme = ThemeData(
-    useMaterial3: false,
+    useMaterial3: true,
     brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color(0xFFF2F1F3),
+    colorScheme: const ColorScheme.light(
+      primary: AppColor.primary,
+      secondary: AppColor.secondary,
+      surface: AppColor.surface,
+      error: AppColor.error,
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onSurface: AppColor.onSurface,
+      onError: Colors.white,
+      outline: AppColor.outline,
+    ),
+    scaffoldBackgroundColor: AppColor.surface,
     appBarTheme: AppBarTheme(
-      backgroundColor: const Color(0xFFF2F1F3),
+      backgroundColor: AppColor.background,
       centerTitle: false,
       elevation: 0,
-      titleTextStyle: 16.w600.copyWith(color: const Color(0xFF1D2A5D)),
-      iconTheme: const IconThemeData(color: Color(0xFF1D2A5D)),
+      titleTextStyle: 18.w600.copyWith(color: AppColor.onSurface),
+      iconTheme: const IconThemeData(color: AppColor.onSurface),
+      surfaceTintColor: Colors.transparent,
+    ),
+    cardTheme: const CardThemeData(
+      color: AppColor.background,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12))),
+      shadowColor: AppColor.shadow,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColor.primary,
+        foregroundColor: Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: AppColor.surface,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColor.primary, width: 2),
+      ),
     ),
   );
 

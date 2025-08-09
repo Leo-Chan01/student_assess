@@ -31,6 +31,13 @@ extension NumberExtension on num {
         fontFamily: AppStrings.fontFamilyName);
   }
 
+  TextStyle get w500 {
+    return TextStyle(
+        fontSize: sp,
+        fontWeight: FontWeight.w500,
+        fontFamily: AppStrings.fontFamilyName);
+  }
+
   TextStyle get regular {
     return TextStyle(
         fontSize: sp,
