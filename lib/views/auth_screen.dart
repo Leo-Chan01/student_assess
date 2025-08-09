@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:student_assess/view_model/providers/auth_provider.dart';
 import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
+import 'package:student_assess/views/widgets/theme_toggle_widget.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -455,6 +456,9 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
+        actions: const [
+          ThemeToggleButton(),
+        ],
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppColor.primary,

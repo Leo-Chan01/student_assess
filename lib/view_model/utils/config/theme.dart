@@ -18,6 +18,8 @@ class AppTheme {
       onSecondary: Colors.white,
       onSurface: Colors.white,
       onError: Colors.white,
+      outline: Color(0xFF424242),
+      inverseSurface: Color(0xFF2D2D2D),
     ),
     scaffoldBackgroundColor: const Color(0xFF121212),
     appBarTheme: AppBarTheme(
@@ -26,12 +28,14 @@ class AppTheme {
       elevation: 0,
       titleTextStyle: 18.w600.copyWith(color: Colors.white),
       iconTheme: const IconThemeData(color: Colors.white),
+      surfaceTintColor: Colors.transparent,
     ),
     cardTheme: const CardThemeData(
       color: Color(0xFF1E1E1E),
       elevation: 2,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12))),
+      shadowColor: Color(0x3F000000),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -41,6 +45,29 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: const Color(0xFF2D2D2D),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColor.primary, width: 2),
+      ),
+      labelStyle: const TextStyle(color: Colors.white70),
+      hintStyle: const TextStyle(color: Colors.white54),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Color(0xFF1E1E1E),
+      selectedItemColor: AppColor.primary,
+      unselectedItemColor: Colors.white54,
     ),
   );
 

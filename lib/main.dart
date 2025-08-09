@@ -10,6 +10,7 @@ import 'package:student_assess/view_model/providers/auth_provider.dart';
 import 'package:student_assess/view_model/providers/cgpa_calculator_provider.dart';
 import 'package:student_assess/view_model/providers/file_picker_provider.dart';
 import 'package:student_assess/view_model/providers/navigation_provider.dart';
+import 'package:student_assess/view_model/providers/theme_provider.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/config/screen_size.dart';
 import 'package:student_assess/view_model/utils/config/theme.dart';
@@ -24,6 +25,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) => ThemeProvider(),
+        ),
         ChangeNotifierProvider<AuthProvider>(
           create: (context) => AuthProvider(),
         ),
@@ -61,10 +65,16 @@ class MyApp extends StatelessWidget {
               ensureScreenSize: true,
               rebuildFactor: (old, data) => true,
               builder: (context, child) {
-                return MaterialApp.router(
-                  title: 'Student Assess',
-                  theme: AppTheme.instance.lightTheme,
-                  routerConfig: AppRoutes.router,
+                return Consumer<ThemeProvider>(
+                  builder: (context, themeProvider, child) {
+                    return MaterialApp.router(
+                      title: 'Student Assess',
+                      theme: AppTheme.instance.lightTheme,
+                      darkTheme: AppTheme.instance.darkTheme,
+                      themeMode: themeProvider.themeMode,
+                      routerConfig: AppRoutes.router,
+                    );
+                  },
                 );
               },
             );

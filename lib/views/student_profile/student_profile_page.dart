@@ -3,18 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:student_assess/view_model/providers/auth_provider.dart';
+import 'package:student_assess/view_model/providers/theme_provider.dart';
 import 'package:student_assess/view_model/utils/config/color.dart';
 import 'package:student_assess/view_model/utils/config/routes.dart';
 import 'package:student_assess/view_model/utils/extension/num_extension.dart';
 import 'package:student_assess/views/widgets/student_assess_button_widget.dart';
+import 'package:student_assess/views/widgets/theme_toggle_widget.dart';
 
 class StudentProfilePage extends StatelessWidget {
   const StudentProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, child) {
+    return Consumer2<AuthProvider, ThemeProvider>(
+      builder: (context, authProvider, themeProvider, child) {
         return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
@@ -104,6 +106,11 @@ class StudentProfilePage extends StatelessWidget {
                         buttonText: "Delete All Data",
                         buttonColor: Colors.red,
                         buttonTextColor: AppColor.white),
+                    SizedBox(height: 18.h),
+
+                    // Theme Toggle Card
+                    const ThemeToggleCard(),
+
                     SizedBox(height: 18.h),
 
                     // Sign Out Button
